@@ -11,3 +11,5 @@ add_executable(hello_window "Hello Window/main.cpp" utils/glad.c)
 target_link_libraries(hello_window -lopengl32 ${PROJECT_SOURCE_DIR}/libs/glfw3.dll)
 
 add_executable(notes cpp_notes/main.cpp)
+
+add_executable(math math/main.cpp)
