@@ -15,17 +15,29 @@ int main()
     int glfw_minor = 0;
     int glfw_rev = 0;
 
+    /*
+     * glfw initialization and termination
+     * https://www.glfw.org/docs/latest/intro_guide.html#intro_init
+     */
     glfwInit();
     glfwGetVersion(&glfw_major, &glfw_minor, &glfw_rev);
 
     std::cout << "GLFW library compile information: " << glfwGetVersionString() << std::endl;
     std::cout << "GLFW version information: " << glfw_major << "." << glfw_minor << "." << glfw_rev << std::endl;
 
+    /*
+     * glfw window creation hints
+     * https://www.glfw.org/docs/latest/window_guide.html#window_hints
+     */
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
+    /*
+     * glfw window creation
+     * https://www.glfw.org/docs/latest/window_guide.html#window_creation
+     */
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Window", NULL, NULL);
     if (NULL == window)
     {
@@ -34,7 +46,13 @@ int main()
         return -1;
     }
 
+    /*
+     * Assign opengl context to this glfw window.
+     */
     glfwMakeContextCurrent(window);
+    /*
+     * double buffers
+     */
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
@@ -44,10 +62,15 @@ int main()
         return -1;
     }
 
+    /*
+     * event processing
+     * https://www.glfw.org/docs/latest/input_guide.html#events
+     */
     while(!glfwWindowShouldClose(window))
     {
         processInput(window);
 
+        /*opengl color buffer*/
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -55,6 +78,9 @@ int main()
         glfwPollEvents();
     }
 
+    /*glfw initialization and termination
+    * https://www.glfw.org/docs/latest/intro_guide.html#intro_init
+    */
     glfwTerminate();
     return 0;
 }
