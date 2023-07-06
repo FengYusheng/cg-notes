@@ -28,11 +28,23 @@ int main()
     /*
      * glfw window creation hints
      * https://www.glfw.org/docs/latest/window_guide.html#window_hints
+     *
+     * How to get these winidow hints?
      */
+    glfwDefaultWindowHints();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+
+    /*
+     * forward and backward compatible
+     * https://www.zhihu.com/question/47239021/answer/524159893
+     */
+#ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+#endif
 
     /*
      * glfw window creation
