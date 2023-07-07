@@ -6,6 +6,8 @@
 const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 920;
 
+void processInput(GLFWwindow* window);
+
 int main()
 {
     int glfw_major = 0;
@@ -38,6 +40,14 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+    glfwWindowHint(GLFW_RESIZABLE,GLFW_TRUE);
+    glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+
+    /*
+     * What exactly is an "OpenGL Context"? How does it work?
+     * https://www.gamedev.net/forums/topic/603708-what-exactly-is-an-opengl-context-how-does-it-work/
+     */
+    glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
 
     /*
      * forward and backward compatible
@@ -47,8 +57,29 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 #endif
 
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Triangle", NULL, NULL);
+    if (NULL == window)
+    {
+        std::cout << "Failed to create a glfw window." << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
+    while(!glfwWindowShouldClose(window))
+    {
+        processInput(window);
+        glfwPollEvents();
+    }
 
     glfwTerminate();
     return 0;
+}
+
+
+void processInput(GLFWwindow* window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
 }
