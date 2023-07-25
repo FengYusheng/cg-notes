@@ -7,6 +7,7 @@ const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 920;
 
 void processInput(GLFWwindow* window);
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 int main()
 {
@@ -35,13 +36,18 @@ int main()
      * How to get the window hints?
      */
     glfwDefaultWindowHints();
-    glfwWindowHint(GLFW_OPENGL_API, GLFW_OPENGL_API);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
     glfwWindowHint(GLFW_RESIZABLE,GLFW_TRUE);
     glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+
+    /*
+     * https://www.glfw.org/docs/latest/window_guide.html#GLFW_CONTEXT_RELEASE_BEHAVIOR_hint
+     */
+    glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_FLUSH);
 
     /*
      * What exactly is an "OpenGL Context"? How does it work?
@@ -57,6 +63,12 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 #endif
 
+    /*
+     * Full screen window
+     * https://www.glfw.org/docs/latest/window_guide.html#window_full_screen
+     *
+     * GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Triangle", glfwGetPrimaryMonitor(), NULL);
+     */
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Triangle", NULL, NULL);
     if (NULL == window)
     {
@@ -64,6 +76,14 @@ int main()
         glfwTerminate();
         return -1;
     }
+
+    /*
+     * https://www.glfw.org/docs/latest/group__context.html#ga1c04dc242268f827290fe40aa1c91157
+     * This function makes the OpenGL or OpenGL ES context of the specified window current on the calling thread.
+     * A context must only be made current on a single thread at a time and each thread can have only a single current
+     * context at a time.
+     */
+    glfwMakeContextCurrent(window);
 
     while(!glfwWindowShouldClose(window))
     {
@@ -82,4 +102,9 @@ void processInput(GLFWwindow* window)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
 }

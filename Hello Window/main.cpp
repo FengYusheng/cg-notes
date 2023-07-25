@@ -47,6 +47,11 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
 
     /*
+     * https://www.glfw.org/docs/latest/window_guide.html#GLFW_CONTEXT_RELEASE_BEHAVIOR_hint
+     */
+    glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_FLUSH);
+
+    /*
      * forward and backward compatible
      * https://www.zhihu.com/question/47239021/answer/524159893
      */
@@ -70,6 +75,7 @@ int main()
      * Assign opengl context to this glfw window.
      */
     glfwMakeContextCurrent(window);
+
     /*
      * double buffers
      */
