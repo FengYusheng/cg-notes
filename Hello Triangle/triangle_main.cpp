@@ -6,6 +6,22 @@
 const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 920;
 
+const char *vertexShaderSource = "#version 460 core\n"
+                                 "\n"
+                                 "layout (location=0) in vec3 aPos;\n"
+                                 "\n"
+                                 "void main() {\n"
+                                 "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                 "}";
+
+const char* fragmentSahderSource = "#version 460 core\n"
+                                   "\n"
+                                   "out vec4 FragColor;\n"
+                                   "\n"
+                                   "void main() {\n"
+                                   "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                   "}";
+
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -14,6 +30,8 @@ int main()
     int glfw_major = 0;
     int glfw_minor = 0;
     int glfw_rev = 0;
+    int success = 0;
+    char infoLog[512] = {0};
 
     /*
      * Initialization hints
@@ -84,6 +102,37 @@ int main()
      * context at a time.
      */
     glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    if(!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
+    /* Build and compile the shader program. */
+
+    /* vertex shader */
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+
+    /* fragment shader */
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentSahderSource, NULL);
+    glCompileShader(fragmentShader);
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR:SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
 
     while(!glfwWindowShouldClose(window))
     {
