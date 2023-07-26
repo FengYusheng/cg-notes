@@ -134,6 +134,26 @@ int main()
         std::cout << "ERROR:SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
+    /* link shaders */
+    unsigned int shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if(!success)
+    {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+
+    /* The shader objects are useless after linking.
+     * If a shader object to be deleted is attached to a program object, it will be flagged for deletion,
+     * but it will not be deleted until it is no longer attached to any program object, for any rendering context
+     * (i.e., it must be detached from wherever it was attached before it will be deleted).
+     */
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
     while(!glfwWindowShouldClose(window))
     {
         processInput(window);
