@@ -33,6 +33,16 @@ int main()
     int success = 0;
     char infoLog[512] = {0};
 
+    /* vertex data and attribute configuration */
+    float vertices[] = {
+            -0.5f, -0.5, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            0.0f, 0.5f, 0.0f
+    };
+
+    unsigned int VBO;
+    unsigned int VAO;
+
     /*
      * Initialization hints
      * https://www.glfw.org/docs/latest/intro_guide.html#init_hints
@@ -153,6 +163,21 @@ int main()
      */
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    /*
+     * Bind the VAO first, any subsequence VBO, EBO, glVertexAttribPointer and glEnableVertexAttribArray calls
+     * will be stored in inside the VAO currently bound.
+     *
+     * When we say a vertex, we are saying the position, color, depth and any other information for this vertex. These
+     *  various kinds of information are called "vertex attributes".
+     */
+    glBindVertexArray(VAO);
+    /* GL_ARRAY_BUFFER, vertex attributes */
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     while(!glfwWindowShouldClose(window))
     {
