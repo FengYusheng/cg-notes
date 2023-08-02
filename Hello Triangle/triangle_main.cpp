@@ -179,6 +179,50 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    /*
+     * https://learnopengl.com/Getting-started/Hello-Triangle
+     * 1. The first parameter specifies which vertex attribute we want to configure.
+     *    Remember that we specified the location of the position vertex attribute in the vertex shader with
+     *    layout (location = 0). This sets the location of the vertex attribute to 0 and since we want to pass data
+     *    to this vertex attribute, we pass in 0.
+     *
+     * 2. The next argument specifies the size of the vertex attribute. The vertex attribute is a vec3
+     *    so it is composed of 3 values.
+     *
+     * 3. The third argument specifies the type of the data which is GL_FLOAT (a vec* in GLSL consists of floating
+     *    point values).
+     *
+     * 4. The next argument specifies if we want the data to be normalized. If we're inputting integer data types
+     *    (int, byte) and we've set this to GL_TRUE, the integer data is normalized to 0 (or -1 for signed data) and
+     *    1 when converted to float. This is not relevant for us so we'll leave this at GL_FALSE.
+     *
+     * 5. The fifth argument is known as the stride and tells us the space between consecutive vertex attributes.
+     *    Since the next set of position data is located exactly 3 times the size of a float away we specify that
+     *    value as the stride. Note that since we know that the array is tightly packed (there is no space between
+     *    the next vertex attribute value) we could've also specified the stride as 0 to let OpenGL determine the
+     *    stride (this only works when values are tightly packed). Whenever we have more vertex attributes we have to
+     *    carefully define the spacing between each vertex attribute but we'll get to see more examples of that later on.
+     *
+     * 6. The last parameter is of type void* and thus requires that weird cast. This is the offset of where the
+     *    position data begins in the buffer. Since the position data is at the start of the data array this value
+     *    is just 0.
+     */
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    /*
+     * note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound
+     * vertex buffer object so afterwards we can safely unbind.
+     */
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    /*
+     * You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens.
+     * Modifying other VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs)
+     * when it's not directly necessary.
+     */
+    glBindVertexArray(0);
+
     while(!glfwWindowShouldClose(window))
     {
         processInput(window);
