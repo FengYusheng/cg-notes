@@ -223,11 +223,33 @@ int main()
      */
     glBindVertexArray(0);
 
+    /* Uncomment this call to draw in wireframe polygons.
+     * GL_FILL
+     * GL_LINE
+     * GL_POINT
+     */
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     while(!glfwWindowShouldClose(window))
     {
         processInput(window);
+
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(shaderProgram);
+        /* Seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized. */
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    /* Optional: de-allocate all resources once they've outlived their purpose. */
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteProgram(shaderProgram);
 
     glfwTerminate();
     return 0;
