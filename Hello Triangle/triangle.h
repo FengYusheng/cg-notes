@@ -1,5 +1,5 @@
-#ifndef LEARNOPENGL_NOTES_TRANGLE_H
-#define LEARNOPENGL_NOTES_TRANGLE_H
+#ifndef LEARNOPENGL_NOTES_TRIANGLE_H
+#define LEARNOPENGL_NOTES_TRIANGLE_H
 
 /*
  * 关于关键字static和extern的详细用法
@@ -29,4 +29,4 @@ const char* fragmentSahderSource = "#version 460 core\n"
 extern void processInput(GLFWwindow* window);
 extern void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-#endif //LEARNOPENGL_NOTES_TRANGLE_H
+#endif //LEARNOPENGL_NOTES_TRIANGLE_H
