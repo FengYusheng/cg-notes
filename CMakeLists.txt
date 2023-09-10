@@ -20,5 +20,5 @@ add_executable(notes cpp_notes/main.cpp)
 add_executable(math math/main.cpp)
 
 add_executable(2nd_trianlge "Hello Triangle/2nd_trianlge.cpp" utils/glad.c
-        "Hello Triangle/2nd_triangle.h")
+)
 target_link_libraries(2nd_trianlge -lopengl32 ${PROJECT_SOURCE_DIR}/libs/glfw3.dll)
