@@ -28,6 +28,26 @@ int main()
     glfwInit();
 
     /* Creation hints */
+    glfwDefaultWindowHints();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+    glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
+    glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_FLUSH);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+    /*
+     * Stereo rendering unavailable
+     * https://discourse.glfw.org/t/glfw-stereo/188
+     *
+     * glfwWindowHint(GLFW_STEREO, GLFW_TRUE);
+     */
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+    glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+#endif
 
     /* Create shader objects and load shader source codes to shader objects */
 
@@ -53,12 +73,30 @@ int main()
 
     /* Select a polygon rasterization mode */
 
-    /* Event processing */
+    /* Windows creation and  event processing */
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "My 2nd Triangle", NULL, NULL);
+    if (NULL == window)
+    {
+        std::cout << "Failed to create a glfw window." << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
+    while(!glfwWindowShouldClose(window))
+    {
+        processInput(window);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     /* Bind a VAO and draw the scene */
 
     /* Window destruction and termination */
-
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }
