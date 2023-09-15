@@ -7,7 +7,25 @@
 
 int main()
 {
+    /*
+    * GLFW version management
+    * https://www.glfw.org/docs/latest/intro_guide.html#intro_version
+    */
+    int glfw_major = 0;
+    int glfw_minor = 0;
+    int glfw_rev = 0;
+
+    /* compile-time version */
+    std::cout << "GLFW compile-time version: " << GLFW_VERSION_MAJOR << "." << GLFW_VERSION_MINOR << "." << GLFW_VERSION_REVISION << std::endl;
+    std::cout << "GLFW compile-time verbose version info: " << glfwGetVersionString() << std::endl;
+
+    /* run-time version */
+    glfwGetVersion(&glfw_major, &glfw_minor, &glfw_rev);
+    std::cout << "GLFW run-time version: " << glfw_major << "." << glfw_minor << "." << glfw_rev << std::endl;
+
     /* Initialization hints */
+    glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, GLFW_FALSE);
+    glfwInit();
 
     /* Creation hints */
 
@@ -40,6 +58,7 @@ int main()
     /* Bind a VAO and draw the scene */
 
     /* Window destruction and termination */
-    std::cout << "My 2nd triangle" << std::endl;
+
+    glfwTerminate();
     return 0;
 }
