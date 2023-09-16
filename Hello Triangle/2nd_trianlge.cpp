@@ -82,16 +82,27 @@ int main()
         return -1;
     }
 
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    /* This step must be below the above 2 steps. */
+    if(!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
     while(!glfwWindowShouldClose(window))
     {
         processInput(window);
 
+        glClearColor(0.1f, 0.4f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     /* Bind a VAO and draw the scene */
 
