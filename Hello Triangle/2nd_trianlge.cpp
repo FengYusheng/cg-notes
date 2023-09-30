@@ -20,11 +20,13 @@ int main()
     int glfw_rev = 0;
     GLint success = 0;
     GLchar infoLog[512] = {0};
+    GLuint VAO;
+    GLuint VBO;
 
     /* vertex positions */
     float vertices[] = {
-            -0.5f, 0.0f, 0.0f,
-            0.5f, 0.0f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
             0.0f, 0.5f, 0.0f
     };
 
@@ -101,25 +103,62 @@ int main()
         return -1;
     }
 
+    GLuint fragementSahder = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragementSahder, 1, &fragmentSahderSource, NULL);
+    glCompileShader(fragementSahder);
+    glGetShaderiv(fragementSahder, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(fragementSahder, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER:FRAGMENT::COMPILATION FAILED\n" << infoLog << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
     /* Create a program object and attach shader objets to that program object */
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragementSahder);
 
     /* Link shaders */
+    glLinkProgram(shaderProgram);
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if(!success)
+    {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING FAILED\n" << infoLog << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
     /* Delete shader objects after linking shaders */
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragementSahder);
 
     /* Load data to the shader program from CPU to GPU */
-
     /* Generate buffer objects, such as VAO, VBO, EBO and so on */
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
 
     /* Bind a VAO first */
+    glBindVertexArray(VAO);
 
     /* Bind a VBO and load vertex data to it */
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     /* Set vertex attributes' pointers and enable vertex attributes */
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    /* Unbind VAO and VBO */
+    /* Unbind VBO */
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    /* Unbind VAO */
+    glBindVertexArray(0);
 
     /* Select a polygon rasterization mode */
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     /* Event processing */
     while(!glfwWindowShouldClose(window))
@@ -128,6 +167,10 @@ int main()
 
         glClearColor(0.1f, 0.4f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
