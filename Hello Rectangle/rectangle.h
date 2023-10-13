@@ -6,7 +6,7 @@ const static char *vertexShaderSource = "#version 460 core\n"
                                         "layout (location=0) in vec3 aPos;\n"
                                         "\n"
                                         "void main() {\n"
-                                        "    gl_Position = vec4(a.x, a.y, a.z, 1.0);\n"
+                                        "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
                                         "}";
 
 const static char *fragmentShaderSource = "#version 460 core\n"

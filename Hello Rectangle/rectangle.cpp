@@ -10,6 +10,10 @@ int main()
     int glfw_major;
     int glfw_minor;
     int glfw_rev;
+    GLint is_success;
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLchar infoLog[512] = {0};
 
     glfwInit();
 
@@ -49,7 +53,29 @@ int main()
         return -1;
     }
 
+    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &is_success);
+    if(!is_success)
+    {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION FAILED\n" << infoLog << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
+    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &is_success);
+    if(!is_success)
+    {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION FAILED\n" << infoLog << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
     /*
      * glfw timer
