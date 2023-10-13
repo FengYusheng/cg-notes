@@ -27,5 +27,7 @@ add_executable(2nd_trianlge "Hello Triangle/2nd_trianlge.cpp" utils/glad.c
 target_link_libraries(2nd_trianlge -lopengl32 ${PROJECT_SOURCE_DIR}/libs/glfw3.dll)
 
 add_executable(rectangle "Hello Rectangle/rectangle.cpp" "Hello Rectangle/rectangle.h"
-        "Hello Rectangle/utils.cpp")
+        "Hello Rectangle/utils.cpp"
+        utils/glad.c
+)
 target_link_libraries(rectangle -lopengl32 ${PROJECT_SOURCE_DIR}/libs/glfw3.dll)
