@@ -13,6 +13,7 @@ int main()
     GLint is_success;
     GLuint vertexShader;
     GLuint fragmentShader;
+    GLuint shaderProgram;
     GLchar infoLog[512] = {0};
 
     glfwInit();
@@ -73,6 +74,19 @@ int main()
     {
         glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION FAILED\n" << infoLog << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &is_success);
+    if(!is_success)
+    {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING FAILED\n" << infoLog << std::endl;
         glfwTerminate();
         return -1;
     }
