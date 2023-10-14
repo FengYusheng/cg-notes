@@ -10,6 +10,11 @@ int main()
     int glfw_major;
     int glfw_minor;
     int glfw_rev;
+    GLint is_success;
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLuint shaderProgram;
+    GLchar infoLog[512] = {0};
 
     /* compilation-time */
     std::cout << "GLFW compilation-time version: " << GLFW_VERSION_MAJOR << "." << GLFW_VERSION_MINOR << "." << GLFW_VERSION_REVISION << std::endl;
@@ -44,6 +49,46 @@ int main()
     if(!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
     {
         std::cout << "ERROR::GLAD::INITIALIZATION FAILED!" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
+    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &is_success);
+    if(!is_success)
+    {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION FAILED\n" << infoLog << std::endl;
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        return -1;
+    }
+
+    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &is_success);
+    if(!is_success)
+    {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION FAILED\n" << infoLog << std::endl;
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        return -1;
+    }
+
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &is_success);
+    if(!is_success)
+    {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING FAILED\n" << infoLog << std::endl;
+        glfwDestroyWindow(window);
         glfwTerminate();
         return -1;
     }
