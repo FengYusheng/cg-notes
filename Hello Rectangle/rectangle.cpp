@@ -150,6 +150,11 @@ int main()
      */
     std::cout << glfwGetTime() << std::endl;
 
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+    glDeleteProgram(shaderProgram);
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }
