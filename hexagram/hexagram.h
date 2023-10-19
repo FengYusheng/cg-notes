@@ -14,7 +14,15 @@ const static char *fragmentShaderSource = "#version 460 core\n"
                                           "out vec4 fragColor;\n"
                                           "\n"
                                           "void main() {\n"
-                                          "    fragColor = vec4(0.0f, 0.0f, 1.0f, 1.0f);\n"
+                                          "    fragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);\n"
+                                          "}";
+
+const static char *fragmentShaderSource2 = "#version 460 core\n"
+                                          "\n"
+                                          "out vec4 fragColor;\n"
+                                          "\n"
+                                          "void main() {\n"
+                                          "    fragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);\n"
                                           "}";
 
 const static int SCR_WIDTH = 800;

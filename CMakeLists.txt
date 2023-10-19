@@ -36,3 +36,5 @@ add_executable(hexagram hexagram/hexagram.cpp hexagram/hexagram.h utils/glad.c
         hexagram/utils.cpp)
 target_link_libraries(hexagram -lopengl32 ${PROJECT_SOURCE_DIR}/libs/glfw3.dll)
 
+add_executable(hexagram2 hexagram/hexagram2.cpp hexagram/hexagram.h utils/glad.c hexagram/utils.cpp)
+target_link_libraries(hexagram2 -lopengl32 ${PROJECT_SOURCE_DIR}/libs/glfw3.dll)
