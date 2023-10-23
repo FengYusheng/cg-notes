@@ -172,6 +172,13 @@ int main()
         glfwSwapBuffers(window);
     }
 
+    glDeleteProgram(shaderProgram1);
+    glDeleteProgram(shaderProgram2);
+    glDeleteVertexArrays(1, &VAO1);
+    glDeleteVertexArrays(1, &VAO2);
+    glDeleteBuffers(1, &VBO1);
+    glDeleteBuffers(1, &VBO2);
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }
