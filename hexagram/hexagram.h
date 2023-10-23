@@ -14,7 +14,7 @@ const static char *fragmentShaderSource = "#version 460 core\n"
                                           "out vec4 fragColor;\n"
                                           "\n"
                                           "void main() {\n"
-                                          "    fragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);\n"
+                                          "    fragColor = vec4(0.0f, 0.0f, 1.0f, 1.0f);\n"
                                           "}";
 
 const static char *fragmentShaderSource2 = "#version 460 core\n"
@@ -27,6 +27,16 @@ const static char *fragmentShaderSource2 = "#version 460 core\n"
 
 const static int SCR_WIDTH = 800;
 const static int SCR_HEIGHT = 600;
+
+const float vertices[] = {
+        -0.5f, -0.25f, 0.0f,
+        0.0f, 0.5f, 0.0f,
+        0.5f, -0.25f, 0.0f,
+
+        -0.5f, 0.25f, 0.0f,
+        0.0f, -0.5f, 0.0f,
+        0.5f, 0.25f, 0.0f
+};
 
 extern void processInput(GLFWwindow *window);
 extern void framebuffer_size_callback(GLFWwindow *window, int width, int height);

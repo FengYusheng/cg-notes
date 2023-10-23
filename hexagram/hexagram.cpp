@@ -18,16 +18,6 @@ int main()
     GLuint VBO;
     GLchar infoLog[512] = {0};
 
-    float vertices[] = {
-            -0.5f, -0.25f, 0.0f,
-            0.0f, 0.5f, 0.0f,
-            0.5f, -0.25f, 0.0f,
-
-            -0.5f, 0.25f, 0.0f,
-            0.0f, -0.5f, 0.0f,
-            0.5f, 0.25f, 0.0f
-    };
-
     /* compilation-time */
     std::cout << "GLFW compilation-time version: " << GLFW_VERSION_MAJOR << "." << GLFW_VERSION_MINOR << "." << GLFW_VERSION_REVISION << std::endl;
 
@@ -127,7 +117,7 @@ int main()
     {
         processInput(window);
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
