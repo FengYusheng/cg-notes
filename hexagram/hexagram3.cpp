@@ -115,6 +115,27 @@ int main()
         glfwTerminate();
     }
 
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShaderOrange);
+    glDeleteShader(fragmentShaderYellow);
+
+    glGenVertexArrays(2, VAOs);
+    glGenBuffers(2, VBOs);
+
+    glBindVertexArray(VAOs[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(orangeTriangle), orangeTriangle, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindVertexArray(VAOs[1]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(yellowTriangle), yellowTriangle, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     while(!glfwWindowShouldClose(window))
     {
         processInput(window);
@@ -122,10 +143,22 @@ int main()
         glClearColor(0.1f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glUseProgram(shaderProgramOrange);
+        glBindVertexArray(VAOs[0]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glUseProgram(shaderProgramYellow);
+        glBindVertexArray(VAOs[1]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
 
+    glDeleteProgram(shaderProgramOrange);
+    glDeleteProgram(shaderProgramYellow);
+    glDeleteVertexArrays(sizeof(VAOs), VAOs);
+    glDeleteBuffers(sizeof(VBOs), VBOs);
     glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
