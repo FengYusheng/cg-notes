@@ -25,7 +25,7 @@ const static char *fragmentShaderSource2 = "#version 460 core\n"
                                           "    fragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);\n"
                                           "}";
 
-const static char *fragmentShaderOrange = "#version 460 core\n"
+const static char *orangeFragmentShaderSource = "#version 460 core\n"
                                            "\n"
                                            "out vec4 fragColor;\n"
                                            "\n"
@@ -33,7 +33,7 @@ const static char *fragmentShaderOrange = "#version 460 core\n"
                                            "    fragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
                                            "}";
 
-const static char *fragmentShaderYellow = "#version 460 core\n"
+const static char *yellowFragmentShaderSource = "#version 460 core\n"
                                           "\n"
                                           "out vec4 fragColor;\n"
                                           "\n"
